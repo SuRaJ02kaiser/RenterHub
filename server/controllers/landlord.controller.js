@@ -76,7 +76,7 @@ const updatelandlord = async(req,res) => {
 
 const getTenants = async(req,res) => {
     try{
-    const tenants = await tenantModel.find({landlord:req.user.userId});
+    const tenants = await tenantModel.find({landlord:req.user.userId}).populate("property","name");
     if(tenants.length == 0){
         return res.status(404).json({message:"No Tenants Available"})
     }
