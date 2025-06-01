@@ -116,7 +116,7 @@ const getRequestslandlord = async (req, res) => {
 
 const getProperty = async (req, res) => {
     try {
-        const properties = await propertyModel.find({ landlordId: req.user.userId });
+        const properties = await propertyModel.find({ landlord: req.user.userId });
 
         if (!properties.length) {
             return res.status(404).json({ message: "No properties available" });
@@ -144,7 +144,7 @@ const getlandlord = async(req,res) => {
 const addTenant = async(req,res) => {
     try {
         const {tid} = req.params;
-        let updatedTenant = await tenantModel.findByIdAndUpdate(tid, {landlord: req.user.userId}, { new: true });
+        let updatedTenant = await tenantModel.findByIdAndUpdate(tid, {landlord: req.user.userId},{ new: true });
         res.status(200).json({ message: "Tenant added landlord", updatedTenant });
     } catch (err) {
         res.status(500).json({ message: "Something went wrong", error: err.message });
