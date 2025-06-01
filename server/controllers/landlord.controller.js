@@ -116,12 +116,10 @@ const getRequestslandlord = async (req, res) => {
 
 const getProperty = async (req, res) => {
     try {
-        const properties = await propertyModel.find({ landlord: req.user.userId });
-
+        const properties = await propertyModel.find({landlord: req.user.userId});
         if (!properties.length) {
             return res.status(404).json({ message: "No properties available" });
         }
-
         return res.status(200).json(properties);
     } catch (err) {
         console.error("Error fetching properties:", err);

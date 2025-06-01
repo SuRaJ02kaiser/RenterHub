@@ -5,6 +5,7 @@ const requestSchema = new mongoose.Schema({
     title:String,
     category: String,
     description:String,
+    tenantName:String,
     priority: {type:String,enum:["Low","Medium","High","Urgent"]},
     status: {type:String, enum:["Pending","In progress", "Completed"]},
     response:String,

@@ -4,9 +4,9 @@ const tenantModel = require("../models/tenant.model");
 
 const addRequest = async (req, res) => {
     try {
-        const { title, category, description, priority } = req.body;
+        const { title, category, description, priority , tenantName} = req.body;
 
-        if (!title || !category || !description || !priority) {
+        if (!title || !category || !description || !priority || !tenantName) {
             return res.status(400).json({ message: "Please provide all the information" });
         }
 
@@ -20,6 +20,7 @@ const addRequest = async (req, res) => {
             title,
             category,
             description,
+            tenantName,
             priority,
             status:"Pending",
             property: tenant.property,
@@ -52,7 +53,6 @@ const deleteRequest = async (req, res) => {
         res.status(500).json({ message: "Something went wrong", error: err.message });
     }
 };
-
 
 
 

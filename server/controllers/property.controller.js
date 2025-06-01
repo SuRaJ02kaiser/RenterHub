@@ -117,5 +117,4 @@ const removeTenantFromProperty = async (req, res) => {
 };
 
 
-
 module.exports = {addProperty,deleteProperty,updateProperty,addTenantToProperty,removeTenantFromProperty};
