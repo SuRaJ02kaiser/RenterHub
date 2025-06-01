@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>renterHub - Secure Authentication</title>
+    <link rel="stylesheet" href="./login_signup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div class="noise-bg"></div>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <div class="toast-icon" id="toastIcon"></div>
+        <div class="toast-content">
+            <div class="toast-title" id="toastTitle"></div>
+            <div class="toast-message" id="toastMessage"></div>
+        </div>
+        <button class="close-toast" onclick="hideToast()">&times;</button>
+    </div>
+
+    <div class="auth-container">
+        <!-- Mode Toggle -->
+        <div class="mode-toggle">
+            <button class="toggle-btn active" id="loginToggle" onclick="switchMode('login')">Login</button>
+            <button class="toggle-btn" id="signupToggle" onclick="switchMode('signup')">Sign Up</button>
+        </div>
+        <br>
+        <!-- Auth Header -->
+        <div class="auth-header">
+            <div class="logo">RenterHub</div>
+            <h2 class="auth-title" id="authTitle">Welcome Back</h2>
+            <p class="auth-subtitle" id="authSubtitle">Sign in to access your dashboard</p>
+        </div>
+
+        <!-- Auth Form Container -->
+        <div class="auth-form" id="authForm">
+            <!-- Login Form Fields -->
+            <div class="form-group" id="loginEmailGroup">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                <div class="error-message">Please enter a valid email address</div>
+            </div>
+
+            <!-- Name Field (Hidden for Login) -->
+            <div class="form-group hidden" id="nameGroup">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name">
+                <div class="error-message">Please enter your full name</div>
+            </div>
+
+            <!-- Phone Field (Hidden for Login) -->
+            <div class="form-group hidden" id="phoneGroup">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter your phone number">
+                <div class="error-message">Please enter a valid phone number</div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="password-group">
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <span class="password-toggle" onclick="togglePassword('password')">
+                        <i class="far fa-eye"></i>
+                    </span>
+                </div>
+                <div class="password-strength" id="passwordStrength">
+                    <div class="strength-meter" id="strengthMeter"></div>
+                </div>
+                <div class="error-message">Password must be at least 8 characters</div>
+            </div>
+
+            <!-- Forgot Password (Only for Login) -->
+            <div class="forgot-password" id="forgotPassword">
+                <a href="#">Forgot Password?</a>
+            </div>
+
+            <button type="submit" class="submit-btn" id="submitBtn" onclick="handleSubmit()">
+                <span class="spinner"></span>
+                <span class="btn-text" id="btnText">Sign In</span>
+            </button>
+
+            <p class="terms-text" id="termsText">
+                By continuing, you agree to our <a href="#" onclick="showTerms()">Terms of Service</a> 
+                and <a href="#" onclick="showPrivacy()">Privacy Policy</a>.
+            </p>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<script src="login_signup.js"></script>

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RenterHub - Select Your Role</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a6bff;
+            --secondary-color: #6c5ce7;
+            --dark-color: #2d3436;
+            --light-color: #f5f6fa;
+            --success-color: #00b894;
+            --warning-color: #fdcb6e;
+            --danger-color: #d63031;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            animation: fadeInUp 0.6s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 7px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .logo-icon {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+        }
+
+        .subtitle {
+            color: #636e72;
+            margin-bottom: 2rem;
+            font-size: 1.05rem;
+            font-weight: 400;
+        }
+
+        .user-type-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .user-type-btn {
+            padding: 1.8rem 1rem;
+            border: 2px solid #dfe6e9;
+            border-radius: 12px;
+            background: white;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-type-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            transition: var(--transition);
+        }
+
+        .user-type-btn:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(74, 107, 255, 0.1);
+        }
+
+        .user-type-btn:hover::after {
+            background: var(--primary-color);
+        }
+
+        .user-type-btn.active {
+            border-color: var(--primary-color);
+            background: linear-gradient(135deg, rgba(74, 107, 255, 0.05), rgba(108, 94, 231, 0.05));
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(74, 107, 255, 0.1);
+        }
+
+        .user-type-btn.active::after {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .user-icon {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .user-type-btn.active .user-icon {
+            color: var(--secondary-color);
+        }
+
+        .user-type-btn .user-label {
+            font-weight: 600;
+            color: var(--dark-color);
+            transition: var(--transition);
+        }
+
+        .user-type-btn.active .user-label {
+            color: var(--secondary-color);
+        }
+
+        .continue-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .continue-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(74, 107, 255, 0.3);
+        }
+
+        .continue-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            background: #b2bec3;
+        }
+
+        .features {
+            margin-top: 2.5rem;
+            text-align: left;
+            border-top: 1px solid #dfe6e9;
+            padding-top: 1.5rem;
+        }
+
+        .features-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .features-title i {
+            color: var(--primary-color);
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-bottom: 0.8rem;
+            color: #636e72;
+            font-size: 0.95rem;
+        }
+
+        .feature-icon {
+            color: var(--success-color);
+            font-size: 0.9rem;
+            margin-top: 3px;
+        }
+
+        .feature-text {
+            flex: 1;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 1.8rem;
+            }
+            
+            .logo {
+                font-size: 1.8rem;
+            }
+            
+            .logo-icon {
+                font-size: 2rem;
+            }
+            
+            .user-type-selector {
+                grid-template-columns: 1fr;
+            }
+            
+            .user-type-btn {
+                padding: 1.5rem 1rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .logo {
+                font-size: 1.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <i class="fas fa-home logo-icon"></i>
+            <span>RenterHub</span>
+        </div>
+        <div class="subtitle">Select your role to get started with our property management platform</div>
+        
+        <div class="user-type-selector">
+            <div class="user-type-btn" data-type="tenant">
+                <i class="fas fa-user-tie user-icon"></i>
+                <div class="user-label">I'm a Tenant</div>
+            </div>
+            <div class="user-type-btn" data-type="landlord">
+                <i class="fas fa-building user-icon"></i>
+                <div class="user-label">I'm a Landlord</div>
+            </div>
+        </div>
+
+        <button class="continue-btn" id="continueBtn" disabled>
+            <i class="fas fa-arrow-right"></i>
+            Continue to Login
+        </button>
+
+        <div class="features">
+            <div class="features-title">
+                <i class="fas fa-star"></i>
+                <span>Key Features</span>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-check-circle feature-icon"></i>
+                <div class="feature-text">Maintenance request tracking with real-time updates</div>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-check-circle feature-icon"></i>
+                <div class="feature-text">Secure document sharing and digital storage</div>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-check-circle feature-icon"></i>
+                <div class="feature-text">Direct messaging between tenants and landlords</div>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-check-circle feature-icon"></i>
+                <div class="feature-text">Payment tracking and rent reminders</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const userTypeBtns = document.querySelectorAll('.user-type-btn');
+            const continueBtn = document.getElementById('continueBtn');
+            let selectedUserType = null;
+
+            // Check if role was previously selected
+            const savedRole = localStorage.getItem('RenterHubRole');
+            if (savedRole) {
+                // Find and click the corresponding button
+                document.querySelector(`.user-type-btn[data-type="${savedRole}"]`).click();
+            }
+
+            // User type selection
+            userTypeBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    userTypeBtns.forEach(b => b.classList.remove('active'));
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Store selected type
+                    selectedUserType = this.dataset.type;
+                    
+                    // Enable continue button
+                    continueBtn.disabled = false;
+                    
+                    // Add pulse animation to continue button
+                    continueBtn.classList.add('pulse');
+                    setTimeout(() => continueBtn.classList.remove('pulse'), 500);
+                });
+            });
+
+            // Continue button functionality
+            continueBtn.addEventListener('click', function() {
+                if (selectedUserType) {
+                    // Store user type in localStorage
+                    localStorage.setItem('RenterHubRole', selectedUserType);
+                    
+                    // Add loading state to button
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Redirecting...';
+                    this.disabled = true;
+                    
+                    // Redirect to login/signup page after a short delay
+                    setTimeout(() => {
+                        window.location.href = "../login_signup/login_signup.html"
+                    }, 800);
+                }
+            });
+
+            // Add hover effects
+            userTypeBtns.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('active')) {
+                        this.style.transform = 'translateY(-5px)';
+                    }
+                });
+                
+                btn.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('active')) {
+                        this.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
