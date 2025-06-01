@@ -1,6 +1,7 @@
 const tenantModel = require("../models/tenant.model");
 const requestModel = require("../models/request.model");
-const propertyModel = require("../models/property.model")
+const propertyModel = require("../models/property.model");
+const landlordModel = require("../models/landlord.model")
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -114,5 +115,18 @@ const getProperty = async(req,res) => {
     }
 }
 
+const getlandlordByTenant = async(req,res) => {
+       try{
+        const tenant = await tenantModel.findById(req.user.userId);
+        const landlordId = tenant.landlord;
+        const landlord = await landlordModel.findById(landlordId);
+        if(!landlord){
+            return res.status(200).json({message:"No landlord available"});
+        }
+        return res.status(200).json(landlord);
+    } catch(err){
+        return res.status(500).json({message:"something went wrong", error:err.message});
+    } 
+}
 
-module.exports = {signuptenant,logintenant,deletetenant,updatetenant,getRequeststenant,getTenant,getProperty}
+module.exports = {signuptenant,logintenant,deletetenant,updatetenant,getRequeststenant,getTenant,getProperty,getlandlordByTenant}
