@@ -155,11 +155,15 @@
     });
 
     // Handle form submission
-    async function handleSubmit() {
+    // Modify your handleSubmit function to check the role
+async function handleSubmit() {
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
     const submitBtn = document.getElementById('submitBtn');
     const btnText = document.getElementById('btnText');
+    
+    // Get the selected role from localStorage
+    const selectedRole = localStorage.getItem('RenterHubRole') || sessionStorage.getItem('selectedRole');
     
     let isValid = true;
 
@@ -219,9 +223,13 @@
 
         try {
             let response;
+            const baseUrl = 'https://renterhub.onrender.com'; // Your deployed backend URL
+            
             if (currentMode === 'login') {
-                // Axios login request
-                response = await axios.post('http://localhost:2552/landlord/login', {
+                // Determine the login endpoint based on role
+                const loginEndpoint = selectedRole === 'landlord' ? '/landlord/login' : '/tenant/login';
+                
+                response = await axios.post(`${baseUrl}${loginEndpoint}`, {
                     email: email,
                     password: password
                 }, {
@@ -229,31 +237,42 @@
                         'Content-Type': 'application/json'
                     }
                 });
+
+                // Store the received token
+                localStorage.setItem('RenterHubToken', response.data.token);
+                localStorage.setItem('RenterHubRole', response.data.role);
+                
             } else {
-                // Axios signup request
+                // Determine the signup endpoint based on role
+                const signupEndpoint = selectedRole === 'landlord' ? '/landlord/signup' : '/tenant/signup';
                 const name = document.getElementById('name').value.trim();
                 const phone = document.getElementById('phone').value.trim();
                 
-                response = await axios.post('http://localhost:2552/landlord/signup', {
-                    name: name,
-                    email: email,
-                    phone: phone,
-                    password: password
-                }, {
+                const requestBody = selectedRole === 'landlord' 
+                    ? { name, email, phone, password }
+                    : { name, email, phone, password, landlord: null }; // You might want to handle landlord assignment differently
+                
+                response = await axios.post(`${baseUrl}${signupEndpoint}`, requestBody, {
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 });
+
+                if (response.data.token) {
+                    localStorage.setItem('RenterHubToken', response.data.token);
+                    localStorage.setItem('RenterHubRole', response.data.role);
+                    localStorage.setItem('RenterHubName',response.data.name);
+                }
             }
 
-            // Success handling (Axios wraps response in a 'data' property)
+            // Success handling
             document.querySelector('.auth-container').classList.add('success');
             submitBtn.classList.remove('loading');
             btnText.textContent = currentMode === 'login' ? 'Sign In' : 'Sign Up';
             
             const successMessage = currentMode === 'login' 
                 ? 'Login successful! Redirecting to your dashboard...' 
-                : 'Account created successfully! Welcome to renterHub.';
+                : 'Account created successfully! Welcome to RenterHub.';
             
             showToast('Success', successMessage, 'success');
             
@@ -264,13 +283,16 @@
             setTimeout(() => {
                 document.querySelector('.auth-container').classList.remove('success');
                 
-                // Redirect after login
-                if (currentMode === 'login') {
-                    window.location.href = '../home/home.html';
+                // Redirect after login/signup
+                if (selectedRole === 'landlord') {
+                    window.location.href = '../landlord_Dashboard/landDash.html';
+                } else {
+                    window.location.href = '../tenant_Dashboard/tenantDash.html';
                 }
-            }, 600);
+            }, 1000);
+            
         } catch (error) {
-            // Axios error handling (error.response contains server response)
+            // Error handling
             submitBtn.classList.remove('loading');
             btnText.textContent = currentMode === 'login' ? 'Sign In' : 'Sign Up';
             
@@ -279,24 +301,36 @@
             if (error.response) {
                 // Server responded with a status code outside 2xx
                 errorMessage = error.response.data.message || errorMessage;
+                
+                // Handle specific error cases
+                if (error.response.status === 401) {
+                    errorMessage = 'Invalid credentials. Please try again.';
+                } else if (error.response.status === 409) {
+                    errorMessage = 'RenterHub already exists. Please login instead.';
+                }
             } else if (error.request) {
-                // Request was made but no response received
                 errorMessage = 'Network error. Please check your connection.';
-            }
-            
-            // Specific handling for wrong credentials
-            if (errorMessage.toLowerCase().includes('wrong credentials')) {
-                errorMessage = 'Wrong credentials. Please try again.';
             }
             
             showToast('Error', errorMessage, 'error');
         }
     } else {
-        // Show error toast if validation fails
         showToast('Error', 'Please fix the errors in the form', 'error');
     }
 }
 
+// Modify your initial role selection to store in localStorage
+document.querySelectorAll('.RenterHub-type-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        RenterHubTypeBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        selectedRenterHubType = this.dataset.type;
+        continueBtn.disabled = false;
+        
+        // Store the selected role in localStorage for persistence
+        localStorage.setItem('RenterHubRole', selectedRenterHubType);
+    });
+});
 
     // Toast notification functions
     function showToast(title, message, type) {

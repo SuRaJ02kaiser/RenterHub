@@ -91,19 +91,33 @@
             observer.observe(element);
         });
 
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
+// Dashboard link click handler
+document.querySelectorAll('.btn.secondary, a[href="#dashboard"]').forEach(dashboardLink => {
+    dashboardLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Check if token and role exist in localStorage
+        const token = localStorage.getItem('RenterHubToken');
+        const role = localStorage.getItem('RenterHubRole');
+        
+        if (token && role) {
+            // Redirect to appropriate dashboard based on role
+            switch(role.toLowerCase()) {
+                case 'landlord':
+                    window.location.href = './landlord_Dashboard/landDash.html';
+                    break;
+                case 'tenant':
+                    window.location.href = './tenant_Dashboard/tenantDash.html';
+                    break;
+                default:
+                    // If role is not recognized, redirect to lander page
+                    window.location.href = './lander/lander.html';
+            }
+        } else {
+            // No token found, redirect to lander page
+            window.location.href = './lander/lander.html';
+        }
+    });
+});
+
+
