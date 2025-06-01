@@ -36,7 +36,6 @@ const addRequest = async (req, res) => {
 };
 
 
-
 const deleteRequest = async (req, res) => {
     try {
         const { id } = req.params;
@@ -53,7 +52,6 @@ const deleteRequest = async (req, res) => {
         res.status(500).json({ message: "Something went wrong", error: err.message });
     }
 };
-
 
 
 const updateRequest = async (req, res) => {
@@ -73,6 +71,8 @@ const updateRequest = async (req, res) => {
         res.status(500).json({ message: "Something went wrong", error: err.message });
     }
 };
+
+
 
 
 module.exports = {addRequest,deleteRequest,updateRequest};

@@ -5,7 +5,7 @@ const propertyRouter = express.Router();
 const {addProperty,deleteProperty,updateProperty,addTenantToProperty,removeTenantFromProperty,getPropertByName} = require("../controllers/property.controller")
 
 propertyRouter.post("/addProperty",authMiddleware(["landlord"]),addProperty);
-propertyRouter.post("/getPropertyByName/:name",authMiddleware(["landlord"]),getPropertByName);
+propertyRouter.post("/getPropertyById/:id",authMiddleware(["landlord"]),getPropertById);
 propertyRouter.delete("/deleteProperty/:id",authMiddleware(["landlord"]),deleteProperty);
 propertyRouter.patch("/updateProperty/:id",authMiddleware(["landlord"]),updateProperty);
 propertyRouter.put("/addTenantToProperty/:tid",authMiddleware(["landlord"]),addTenantToProperty);

@@ -117,10 +117,10 @@ const removeTenantFromProperty = async (req, res) => {
 };
 
 
-const getPropertByName = async(req,res) => {
+const getPropertById = async(req,res) => {
     try {
-        const name = req.params;
-        const properties = await propertyModel.find({name:name});
+        const {id} = req.params;
+        const properties = await propertyModel.findById(id);
         if (!properties.length) {
             return res.status(404).json({ message: "No properties available" });
         }
@@ -131,4 +131,4 @@ const getPropertByName = async(req,res) => {
     }
 };
 
-module.exports = {addProperty,deleteProperty,updateProperty,addTenantToProperty,removeTenantFromProperty,getPropertByName};
+module.exports = {addProperty,deleteProperty,updateProperty,addTenantToProperty,removeTenantFromProperty,getPropertById};
