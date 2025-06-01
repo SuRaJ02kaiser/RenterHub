@@ -97,18 +97,21 @@ const removeTenant = async(req, res) => {
     }
 }
 
+const getRequestslandlord = async (req, res) => {
+  try {
+    const requests = await requestModel
+      .find({ landlord: req.user.userId })
+      .populate("tenant", "name phone");
 
-const getRequestslandlord = async(req,res) => {
-    try{
-        const requests = await requestModel.find({landlord:req.user.userId});
-        if(requests.length == 0){
-            return res.status(200).json({message:"Request folder empty"});
-        }
-        return res.status(200).json(requests);
-    } catch(err){
-        return res.status(500).json({message:"something went wrong", error:err.message});
+    if (requests.length === 0) {
+      return res.status(200).json({ message: "Request folder empty" });
     }
-}
+
+    return res.status(200).json(requests);
+  } catch (err) {
+    return res.status(500).json({ message: "Something went wrong", error: err.message });
+  }
+};
 
 
 const getProperty = async (req, res) => {
