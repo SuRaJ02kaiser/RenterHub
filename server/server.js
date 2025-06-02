@@ -10,7 +10,7 @@ require("dotenv").config();
 const app = express();
 
 app.use(cors({
-  origin: '*', // or ['http://127.0.0.1:5500']
+  origin: ["https://renterhub.netlify.app"],
   methods: ['GET', 'POST', 'PATCH', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
