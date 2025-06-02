@@ -100,7 +100,7 @@ server/
 
 ### Backend Setup
 ```bash
-git clone https://github.com/YourUsername/renterHub2.git
+git clone https://github.com/YourUsername/RenterHub.git
 cd RenterHub/server
 npm install
 ```
